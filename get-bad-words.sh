@@ -21,4 +21,8 @@ echo "$array_start" > src/bad_words.rs
 cat bad_words.txt >> src/bad_words.rs
 echo "$array_end" >> src/bad_words.rs
 
+# format the file
+rustfmt src/bad_words.rs
 
+rm -rf google-profanity-words
+rm bad_words.txt
