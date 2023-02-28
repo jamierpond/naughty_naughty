@@ -31,6 +31,7 @@ fn bad_word(text_input: String) -> String {
     return "false".to_string();
 }
 
+
 fn main() {
     rocket::ignite().mount("/", routes![home, bad_word]).launch();
 }
