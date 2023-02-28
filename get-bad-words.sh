@@ -15,7 +15,7 @@ num_lines=$(wc -l < "$current_dir/bad_words.txt")
 array_start="pub static BAD_WORDS: [&str; $num_lines] = ["
 array_end="];"
 
-cd "$current_dir"
+cd "$current_dir" || exit 1
 
 echo "$array_start" > src/bad_words.rs
 cat bad_words.txt >> src/bad_words.rs
