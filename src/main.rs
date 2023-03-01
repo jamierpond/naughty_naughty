@@ -7,9 +7,10 @@ use bad_words::BAD_WORDS;
 #[macro_use]
 extern crate rocket;
 
+// allows for spaces so that 'bum' is not found in 'bumblebee'
 fn contains_bad_word(text_input: &str) -> bool {
-    for word in BAD_WORDS.iter() {
-        if text_input.contains(word) {
+    for word in text_input.split_whitespace() {
+        if BAD_WORDS.contains(&word) {
             return true;
         }
     }
@@ -23,7 +24,10 @@ fn test_bad_word() {
     assert!(contains_bad_word("happy dogs \n are the best bum") == true);
 
     // test on all escape characters
-    assert!(contains_bad_word("lemons \n \r bu m bum \\3432423\r \t \t"))
+    assert!(contains_bad_word("lemons \n \r bu m bum \\3432423\r \t \t"));
+
+    assert!(contains_bad_word("thousand") == false);
+    assert!(contains_bad_word("bumblebee") == false);
 }
 
 
