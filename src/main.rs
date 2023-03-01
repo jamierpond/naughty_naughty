@@ -7,7 +7,7 @@ use bad_words::BAD_WORDS;
 #[macro_use]
 extern crate rocket;
 
-fn contains_bad_word(text_input: String) -> bool {
+fn contains_bad_word(text_input: &str) -> bool {
     for word in BAD_WORDS.iter() {
         if text_input.contains(word) {
             return true;
@@ -15,6 +15,17 @@ fn contains_bad_word(text_input: String) -> bool {
     }
     return false;
 }
+
+#[test]
+fn test_bad_word() {
+    assert!(contains_bad_word("bum") == true);
+    assert!(contains_bad_word("happy dogs \n are the best") == false);
+    assert!(contains_bad_word("happy dogs \n are the best bum") == true);
+
+    // test on all escape characters
+    assert!(contains_bad_word("lemons \n \r bu m bum \\3432423\r \t \t"))
+}
+
 
 #[get("/")]
 fn home() -> String {
@@ -25,7 +36,7 @@ fn home() -> String {
 #[get("/ask/<text_input>")]
 fn bad_word(text_input: String) -> String {
     println!("text_input: {}", text_input);
-    if contains_bad_word(text_input) {
+    if contains_bad_word(text_input.as_str()) {
         return "true".to_string();
     }
     return "false".to_string();
