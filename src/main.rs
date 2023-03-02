@@ -19,15 +19,15 @@ fn contains_bad_word(text_input: &str) -> bool {
 
 #[test]
 fn test_bad_word() {
-    assert!(contains_bad_word("bum") == true);
-    assert!(contains_bad_word("happy dogs \n are the best") == false);
-    assert!(contains_bad_word("happy dogs \n are the best bum") == true);
+    assert!(contains_bad_word("bum"));
+    assert!(!contains_bad_word("happy dogs \n are the best"));
+    assert!(contains_bad_word("happy dogs \n are the best bum"));
 
     // test on all escape characters
     assert!(contains_bad_word("lemons \n \r bu m bum \\3432423\r \t \t"));
 
-    assert!(contains_bad_word("thousand") == false);
-    assert!(contains_bad_word("bumblebee") == false);
+    assert!(!contains_bad_word("thousand"));
+    assert!(!contains_bad_word("bumblebee"));
 }
 
 
