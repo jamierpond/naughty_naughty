@@ -9,8 +9,20 @@ extern crate rocket;
 
 // allows for spaces so that 'bum' is not found in 'bumblebee'
 fn contains_bad_word(text_input: &str) -> bool {
-    for word in text_input.split_whitespace() {
-        if BAD_WORDS.contains(&word) {
+    for unsanitised_word in text_input.split_whitespace() {
+        let mut word = unsanitised_word;
+
+        let first_char = &word.chars().next().unwrap();
+        if first_char.to_lowercase().to_string() == first_char.to_uppercase().to_string() {
+            word = &word[1..word.len()]
+        }
+
+        let last_char = &word.chars().last().unwrap();
+        if last_char.to_lowercase().to_string() == last_char.to_uppercase().to_string() {
+            word = &word[..word.len() - 1]
+        }
+
+        if BAD_WORDS.contains(&word.to_lowercase().to_string().as_str()) {
             return true;
         }
     }
