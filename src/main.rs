@@ -40,6 +40,9 @@ fn test_bad_word() {
 
     assert!(!contains_bad_word("thousand"));
     assert!(!contains_bad_word("bumblebee"));
+    assert!(contains_bad_word("bla-bla (bum)"));
+    assert!(contains_bad_word("Hey bum: foo"));
+    assert!(contains_bad_word("Bum foobar"));
 }
 
 
