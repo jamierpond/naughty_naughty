@@ -2,10 +2,10 @@
 
 mod bad_words;
 
+#[macro_use] extern crate rocket;
+use rocket_contrib::json::Json;
+use serde::Deserialize;
 use bad_words::BAD_WORDS;
-
-#[macro_use]
-extern crate rocket;
 
 // allows for spaces so that 'bum' is not found in 'bumblebee'
 fn contains_bad_word(text_input: &str) -> bool {
@@ -53,7 +53,7 @@ fn home() -> String {
 }
 
 #[get("/ask/<text_input>")]
-fn bad_word(text_input: String) -> String {
+fn bad_word_get(text_input: String) -> String {
     println!("text_input: {}", text_input);
     if contains_bad_word(text_input.as_str()) {
         return "true".to_string();
@@ -61,7 +61,21 @@ fn bad_word(text_input: String) -> String {
     return "false".to_string();
 }
 
+#[derive(Debug, PartialEq, Eq, Deserialize)]
+struct BadTextRequest {
+    translation: String
+}
+
+#[post("/ask", format = "json", data = "<text_input>")]
+fn bad_word_post(text_input: Json<BadTextRequest>) -> String {
+    println!("text_input: {:?}", text_input);
+    if contains_bad_word(text_input.translation.as_str()) {
+        return "true".to_string();
+    }
+    return "false".to_string();
+}
+
 
 fn main() {
-    rocket::ignite().mount("/", routes![home, bad_word]).launch();
+    rocket::ignite().mount("/", routes![home, bad_word_get, bad_word_post]).launch();
 }
