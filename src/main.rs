@@ -63,13 +63,13 @@ fn bad_word_get(text_input: String) -> String {
 
 #[derive(Debug, PartialEq, Eq, Deserialize)]
 struct BadTextRequest {
-    translation: String
+    transcription: String
 }
 
 #[post("/ask", format = "json", data = "<text_input>")]
 fn bad_word_post(text_input: Json<BadTextRequest>) -> String {
     println!("text_input: {:?}", text_input);
-    if contains_bad_word(text_input.translation.as_str()) {
+    if contains_bad_word(text_input.transcription.as_str()) {
         return "true".to_string();
     }
     return "false".to_string();
