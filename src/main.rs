@@ -36,17 +36,17 @@ fn contains_bad_word(text_input: &str) -> Vec<String> {
 #[test]
 fn test_bad_word() {
     assert!(contains_bad_word("bum").len() == 1);
-    assert!(!contains_bad_word("happy dogs \n are the best").len() == 0);
+    assert!(contains_bad_word("happy dogs \n are the best").len() == 0);
     assert!(contains_bad_word("happy dogs \n are the best bum").len() == 1);
-    assert!(!contains_bad_word(" test").len() == 0);
-    assert!(!contains_bad_word("test ").len() == 0);
-    assert!(!contains_bad_word("test    test").len() == 0);
+    assert!(contains_bad_word(" test").len() == 0);
+    assert!(contains_bad_word("test ").len() == 0);
+    assert!(contains_bad_word("test    test").len() == 0);
 
     // test on all escape characters
     assert!(contains_bad_word("lemons \n \r bu m bum \\3432423\r \t \t").len() == 1);
 
-    assert!(!contains_bad_word("thousand").len() == 0);
-    assert!(!contains_bad_word("bumblebee").len() == 0);
+    assert!(contains_bad_word("thousand").len() == 0);
+    assert!(contains_bad_word("bumblebee").len() == 0);
     assert!(contains_bad_word("bla-bla (bum)").len() == 1);
     assert!(contains_bad_word("Hey bum: foo").len() == 1);
     assert!(contains_bad_word("Bum foobar").len() == 1);
