@@ -8,7 +8,7 @@ use serde::Deserialize;
 use bad_words::BAD_WORDS;
 
 // allows for spaces so that 'bum' is not found in 'bumblebee'
-fn contains_bad_word(text_input: &str) -> Vec<String> {
+fn find_bad_words(text_input: &str) -> Vec<String> {
     let mut results = vec![];
     for unsanitised_word in text_input.split_whitespace() {
         let mut word = unsanitised_word;
@@ -35,22 +35,22 @@ fn contains_bad_word(text_input: &str) -> Vec<String> {
 
 #[test]
 fn test_bad_word() {
-    assert!(contains_bad_word("bum").len() == 1);
-    assert!(contains_bad_word("happy dogs \n are the best").len() == 0);
-    assert!(contains_bad_word("happy dogs \n are the best bum").len() == 1);
-    assert!(contains_bad_word(" test").len() == 0);
-    assert!(contains_bad_word("test ").len() == 0);
-    assert!(contains_bad_word("test    test").len() == 0);
+    assert!(find_bad_words("bum").len() == 1);
+    assert!(find_bad_words("happy dogs \n are the best").len() == 0);
+    assert!(find_bad_words("happy dogs \n are the best bum").len() == 1);
+    assert!(find_bad_words(" test").len() == 0);
+    assert!(find_bad_words("test ").len() == 0);
+    assert!(find_bad_words("test    test").len() == 0);
 
     // test on all escape characters
-    assert!(contains_bad_word("lemons \n \r bu m bum \\3432423\r \t \t").len() == 1);
+    assert!(find_bad_words("lemons \n \r bu m bum \\3432423\r \t \t").len() == 1);
 
-    assert!(contains_bad_word("thousand").len() == 0);
-    assert!(contains_bad_word("bumblebee").len() == 0);
-    assert!(contains_bad_word("bla-bla (bum)").len() == 1);
-    assert!(contains_bad_word("Hey bum: foo").len() == 1);
-    assert!(contains_bad_word("Bum foobar").len() == 1);
-    assert!(contains_bad_word("Bum bum").len() == 2);
+    assert!(find_bad_words("thousand").len() == 0);
+    assert!(find_bad_words("bumblebee").len() == 0);
+    assert!(find_bad_words("bla-bla (bum)").len() == 1);
+    assert!(find_bad_words("Hey bum: foo").len() == 1);
+    assert!(find_bad_words("Bum foobar").len() == 1);
+    assert!(find_bad_words("Bum bum").len() == 2);
 }
 
 
@@ -64,7 +64,7 @@ fn home() -> String {
 fn bad_word_get(text_input: String) -> Json<Vec<String>> {
     println!("text_input: {}", text_input);
 
-    return rocket_contrib::json::Json(contains_bad_word(text_input.as_str()))
+    return rocket_contrib::json::Json(find_bad_words(text_input.as_str()))
 }
 
 #[derive(Debug, PartialEq, Eq, Deserialize)]
@@ -76,7 +76,7 @@ struct BadTextRequest {
 fn bad_word_post(text_input: Json<BadTextRequest>) -> Json<Vec<String>> {
     println!("text_input: {:?}", text_input);
 
-    return rocket_contrib::json::Json(contains_bad_word(text_input.transcription.as_str()))
+    return rocket_contrib::json::Json(find_bad_words(text_input.transcription.as_str()))
 }
 
 
